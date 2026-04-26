@@ -1,0 +1,54 @@
+class Solution:
+    def containsCycle(self, grid):
+        rows = len(grid)
+        cols = len(grid[0])
+
+        visited = [[False] * cols for _ in range(rows)]
+
+        def dfs(r, c, pr, pc, ch):
+            if visited[r][c]:
+                return True
+
+            visited[r][c] = True
+
+            directions = [(1,0), (-1,0), (0,1), (0,-1)]
+
+            for dr, dc in directions:
+                nr = r + dr
+                nc = c + dc
+
+                if 0 <= nr < rows and 0 <= nc < cols:
+                    if grid[nr][nc] == ch:
+
+                        if nr == pr and nc == pc:
+                            continue
+
+                        if dfs(nr, nc, r, c, ch):
+                            return True
+
+            return False
+
+        for i in range(rows):
+            for j in range(cols):
+                if not visited[i][j]:
+                    if dfs(i, j, -1, -1, grid[i][j]):
+                        return True
+
+        return False
+
+
+# User Input
+m = int(input("Enter rows: "))
+n = int(input("Enter columns: "))
+
+grid = []
+
+print("Enter grid row by row:")
+
+for i in range(m):
+    row = input().split()
+    grid.append(row)
+
+obj = Solution()
+
+print("Cycle Exists:", obj.containsCycle(grid))
